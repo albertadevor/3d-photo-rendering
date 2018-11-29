@@ -1,8 +1,8 @@
 
 % convert a not-too-big image into a mask. These images should
 % have the same width and height
-imOne = mask_image('templeSparseRing/templeSR0007.png');
-imTwo = mask_image('templeSparseRing/templeSR0002.png');
+imOne = mask_image('templeSR0007.png');
+imTwo = mask_image('templeSR0002.png');
 % this will display the masks.
 figure, imshow(imOne);
 figure, imshow(imTwo);
