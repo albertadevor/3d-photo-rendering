@@ -15,6 +15,7 @@ imThree = mask_image('templeSparseRing/templeSR0009.png');
 % pointCloud is the actual grid.
 [height width] = size(imOne);
 files = ['templeSparseRing/templeSR0006.png'; 'templeSparseRing/templeSR0011.png'; 'templeSparseRing/templeSR0009.png'];
+%files = [ 'dinoSparseRing/dinoSR0001.png'; 'dinoSparseRing/dinoSR0005.png'; 'dinoSparseRing/dinoSR0003.png']
 allIms = compileIms(files, height, width);
 
 figure, imshow(allIms(:,:,1));
@@ -34,6 +35,9 @@ shp = alphaShape(X',Y',Z');
 shp.RegionThreshold = 1;
 shp.Alpha = 1.5;
 figure, plot(shp)
+
+[triangulation, P] = alphaTriangulation(shp);
+stlFile = stlwrite(triangulation, 'stlfile.stl', 'text');
 
 % Creates a mask of the image
 function mask = mask_image(filename)
