@@ -1,9 +1,9 @@
 
 % convert a not-too-big image into a mask. These images should
 % have the same width and height
-imOne = mask_image('templeSparseRing/templeSR0006.png');
-imTwo = mask_image('templeSparseRing/templeSR0011.png');
-imThree = mask_image('templeSparseRing/templeSR0009.png');
+imOne = mask_image('templeSR0006.png');
+imTwo = mask_image('templeSR0011.png');
+imThree = mask_image('templeSR0009.png');
 
 % imOne = mask_image('dinoSparseRing/dinoSR0001.png');
 % imTwo = mask_image('dinoSparseRing/dinoSR0005.png');
@@ -14,7 +14,7 @@ imThree = mask_image('templeSparseRing/templeSR0009.png');
 % X, Y, and Z hold the coordinates themselves, while
 % pointCloud is the actual grid.
 [height width] = size(imOne);
-files = ['templeSparseRing/templeSR0006.png'; 'templeSparseRing/templeSR0011.png'; 'templeSparseRing/templeSR0009.png'];
+files = ['templeSR0006.png'; 'templeSR0011.png'; 'templeSR0009.png'];
 %files = [ 'dinoSparseRing/dinoSR0001.png'; 'dinoSparseRing/dinoSR0005.png'; 'dinoSparseRing/dinoSR0003.png']
 allIms = compileIms(files, height, width);
 
