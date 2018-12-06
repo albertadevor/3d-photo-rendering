@@ -3,14 +3,12 @@
 % Object size = 1 / distance 
 % orig_dist is how far away the object was when the image was taken
 % new_dist is how far away we want the object to be
+% This only works with making images smaller / distances farther
 
-masked = mask_image('templeSR0006.png');
-imshow(change(masked, 5, 7))
-
-function out = change(masked_image, orig_dist, new_dist)
+function out = change_dist(img, orig_dist, new_dist)
     scale = orig_dist / new_dist;
-    out = zeros(size(masked_image));
-    small = imresize(masked_image, scale);
+    out = zeros(size(img));
+    small = imresize(img, scale);
     padding = (size(out) - size(small)) / 2;
     pceil = ceil(padding);
     pfloor = floor(padding);

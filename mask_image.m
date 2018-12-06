@@ -1,6 +1,6 @@
 % Creates a mask of the image
-function mask = mask_image(filename)
-    gray = rgb2gray(im2double(imread(filename)));
+function mask = mask_image(file)
+    gray = rgb2gray(im2double(file));
     scaleBy = size(gray, 1) / 100;
     gray = imresize(gray, 1/scaleBy);
     % The temple fileset is rotated.
