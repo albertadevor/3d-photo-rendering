@@ -47,7 +47,7 @@ shp.Alpha = 1.5;
 figure, plot(shp)
 
 [triangulation, P] = alphaTriangulation(shp);
-% stlFile = stlwrite(triangulation, 'stlfile.stl', 'text');
+stlFile = stlwrite(triangulation, 'stlfile.stl', 'text');
 
 function [allIms] = compileIms(file, height, width)
     numberOfImages = size(file,1);
