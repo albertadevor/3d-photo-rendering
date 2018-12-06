@@ -44,10 +44,11 @@ figure, scatter3(X, Y, Z);
 shp = alphaShape(X',Y',Z');
 shp.RegionThreshold = 1;
 shp.Alpha = 1.5;
-figure, plot(shp)
+h = plot(shp);
 
-[triangulation, P] = alphaTriangulation(shp);
-stlFile = stlwrite(triangulation, 'stlfile.stl', 'text');
+tri = delaunayTriangulation(shp.Points);
+stlwrite1('stlfile.stl', h.Faces, h.Vertices);
+% stlwrite('stlfile.stl', h.Faces, h.Vertices);
 
 function [allIms] = compileIms(file, height, width)
     numberOfImages = size(file,1);
