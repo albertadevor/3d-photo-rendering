@@ -1,0 +1,8 @@
+These are ROS packages to be put in a catkin_ws.
+
+STEPS:
+1) roscore
+2) roslaunch usb_cam usb_cam.launch
+3) roslaunch webcam_ar_track webcam_indiv.launch
+
+webcam_indiv.launch currenly only tracks one AR tag at a time - will upgrade to support multi-tag tracking.
