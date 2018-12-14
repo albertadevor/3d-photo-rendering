@@ -25,8 +25,8 @@ class image_converter:
 
     def marker_callback(self, data):
         assert len(data.markers) < 2 # only one bundle
-        self.framenum += 1
         if len(data.markers) == 1:
+            self.framenum += 1
             marker = data.markers[0]
             pose = marker.pose.pose
             position = pose.position
@@ -34,11 +34,12 @@ class image_converter:
             cv2.imwrite('frames/frame' + str(self.framenum).zfill(5) + '.png', self.curr_frame)
             with open('data.csv', mode='a') as csv_file:
                 euler =  tf.transformations.euler_from_quaternion([orientation.x, orientation.y, orientation.z, orientation.w])
-                latitude = euler[2] * 180./np.pi
+                latitude = euler[2] * 180./np.pi # angle around object, from -179 to 179
                 dist = position.z
                 #print '({},{},{})'.format(round(euler[0] * 180./np.pi, 1), round(euler[1]*180./np.pi, 1), round(latitude, 1))
                 writer = csv.writer(csv_file)
                 writer.writerow([self.framenum, latitude, dist])
+                print 'angle/dist: ({}, {})'.format(round(latitude, 1), round(dist,1))
             #    writer.writerow([self.framenum, position.x, position.y, position.z, orientation.x, orientation.y, orientation.z, orientation.w])
             print 'frame {} processed!'.format(self.framenum)
 
