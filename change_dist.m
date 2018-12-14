@@ -6,12 +6,13 @@
 % This only works with making images smaller / distances farther
 
 function out = change_dist(img, orig_dist, new_dist)
-    scale = orig_dist / new_dist;
-    out = zeros(size(img));
-    small = imresize(img, scale);
-    padding = (size(out) - size(small)) / 2;
-    pceil = ceil(padding);
-    pfloor = floor(padding);
-    out = padarray(small, pfloor, 'post');
-    out = padarray(out, pceil, 'pre');
+%     scale = orig_dist / new_dist;
+%     out = zeros(size(img));
+%     small = imresize(img, scale);
+%     padding = (size(out) - size(small)) / 2;
+%     pceil = ceil(padding);
+%     pfloor = floor(padding);
+%     out = padarray(small, pfloor, 'post');
+%     out = padarray(out, pceil, 'pre');
+    out = img;
 end
