@@ -25,7 +25,10 @@ def get_data(desired_angle):
     assert framepath in os.listdir('masked_frames')
     img = cv2.imread('masked_frames/' + framepath)
     assert img is not None
-    cv2.imwrite('extracted_frames/angle_{}_dist_{}.png'.format(int(best_angle*10), int(best_dist*10)), img)
+    cv2.imwrite('extracted_frames/' + framepath, img)
+    with open('extracted_frames/extracted_data.csv', mode='a') as csv_file:
+        writer = csv.writer(csv_file)
+        writer.writerow([best_framenum, best_angle, best_dist])
 
 
 if __name__ == '__main__':
