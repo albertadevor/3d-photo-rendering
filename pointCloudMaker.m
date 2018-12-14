@@ -1,40 +1,32 @@
 
-% Modify distances so that all images can work togehter
-% files = ['dif_dists/temple_SR0006_07m.png'; 'dif_dists/temple_SR0011_12m.png'; 'dif_dists/temple_SR0009_05m.png'];
-files = ['templeSR0006.png'; 'templeSR0011.png'; 'templeSR0009.png'];
-distances = [7 12 5]; %how far away camera is from each object
-furthest = max(distances);
-images = cell(size(files));
-masked_images = cell(size(files));
-for idx=1:size(distances,2)
-    im = imread(files(idx, :));
-    thing = change_dist(im, distances(idx), furthest);
-    images{idx} = thing;
-    masked_images{idx} = mask_image(thing);
-end
-
 % convert a not-too-big image into a mask. These images should
 % have the same width and height
+% imOne = mask_image('templeSparseRing/templeSR0006.png');
+% imTwo = mask_image('templeSparseRing/templeSR0011.png');
+% imThree = mask_image('templeSparseRing/templeSR0009.png');
 
-% imOne = mask_image('dinoSparseRing/dinoSR0001.png');
-% imTwo = mask_image('dinoSparseRing/dinoSR0005.png');
-% imThree = mask_image('dinoSparseRing/dinoSR0003.png');
+imOne = mask_image('~/Desktop/duckF.png');
+imTwo = mask_image('~/Desktop/duckS.png');
+imThree = mask_image('~/Desktop/duckQ.png');
 % this will display the masks.
 
 % combine the two masks to create a 3-D point cloud.
 % X, Y, and Z hold the coordinates themselves, while
 % pointCloud is the actual grid.
-[height width] = size(masked_images{1});
-% files = ['templeSR0006.png'; 'templeSR0011.png'; 'templeSR0009.png'];
+[height width] = size(imOne);
+files = ['~/Desktop/duckF.png'; '~/Desktop/duckS.png'; '~/Desktop/duckQ.png'];
+
+%files = ['templeSparseRing/templeSR0006.png'; 'templeSparseRing/templeSR0011.png'; 'templeSparseRing/templeSR0009.png'];
 %files = [ 'dinoSparseRing/dinoSR0001.png'; 'dinoSparseRing/dinoSR0005.png'; 'dinoSparseRing/dinoSR0003.png']
-allIms = compileIms(images, height, width);
+allIms = compileIms(files, height, width);
 
-% allIms(:,:,1);
-% allIms(:,:,2));
+size(imOne)
+% figure, imshow(allIms(:,:,1));
+% figure, imshow(allIms(:,:,2));
 % figure, imshow(allIms(:,:,3));
-angles = [ pi/2, 0, pi/4];
-
-[X, Y, Z, pointCloud] = combine(masked_images{1}, allIms, angles);
+angles = [ pi/2 , 0, pi/4];
+angles
+[X, Y, Z, pointCloud] = combine(imOne, allIms, angles);
 
 % 3D reconstruction of point cloud
 figure, scatter3(X, Y, Z);
@@ -45,17 +37,37 @@ figure, scatter3(X, Y, Z);
 shp = alphaShape(X',Y',Z');
 shp.RegionThreshold = 1;
 shp.Alpha = 1.5;
-h = plot(shp);
+h = plot(shp)
+size(h.Faces)
+%stlFile = stlwrite(triangulation, 'stlfile.stl', 'text');
 
-tri = delaunayTriangulation(shp.Points);
-stlwrite1('stlfile.stl', h.Faces, h.Vertices);
-% stlwrite('stlfile.stl', h.Faces, h.Vertices);
+% Creates a mask of the image
+function mask = mask_image(filename)
+    gray = rgb2gray(im2double(imread(filename)));
+    size(gray)
+    scaleBy = size(gray, 1) / 100;
+    gray = imresize(gray, [100 100]);
+    % The temple fileset is rotated.
+    %gray = imrotate(gray, 90);
+    [m n] = size(gray);
+    for i=1:m
+        for j=1:n
+            if(gray(i,j) == 0)
+                gray(i,j) = 0;
+            else
+                gray(i,j) = 1;
+            end
+        end
+    end
+    mask = gray;
+end
 
-function [allIms] = compileIms(file, height, width)
-    numberOfImages = size(file,1);
+function [allIms] = compileIms(fileNameList, height, width)
+    numberOfImages = size(fileNameList,1);
     allIms = zeros(height, width, numberOfImages);
     for i=1:numberOfImages
-        loadImageMask = mask_image(file{i});
+        loadImageMask = mask_image(fileNameList(i,:));
+        figure, imshow(loadImageMask)
         allIms(:,:,i) = loadImageMask;
     end
 end
@@ -75,7 +87,7 @@ function [X, Y, Z, pointCloud] = combine(im1, masks, thetas)
         im = masks(:,:,imageNumber);
         theta = thetas(imageNumber);
 
-        multiplier = cot(theta);
+        multiplier = cos(theta) / sin(theta);
         if(multiplier < 0.1)
            multiplier = 0; 
         end
