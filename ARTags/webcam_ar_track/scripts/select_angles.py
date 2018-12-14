@@ -33,7 +33,7 @@ if __name__ == '__main__':
     parser.add_argument('--angles', required=True, help='desired angles, seperated by commas')
     args = vars(parser.parse_args())
     input_angles = args['angles']
-    angles = [float(a) for a in input_angles.split(',')]
+    angles = [float(a)-180 for a in input_angles.split(',')]
     if os.path.isdir('extracted_frames'):
         shutil.rmtree('extracted_frames')
     os.mkdir('extracted_frames')

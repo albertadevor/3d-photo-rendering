@@ -1,4 +1,4 @@
-To extract desired angles from data, run select_angles.py.
+To extract desired angles from data, run select_angles.py. Enter angles in range 0-360.
 It will require an --angles argument, where you specify the desired angles separated by commas
 EXAMPLE: python select_angles.py --angles 0.0,45.0,90.0
 
