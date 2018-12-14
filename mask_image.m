@@ -16,5 +16,5 @@ function mask = mask_image(file)
         end
     end
     mask = gray;
-    figure, imshow(mask);
+%     figure, imshow(mask);
 end

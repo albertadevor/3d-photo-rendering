@@ -14,5 +14,6 @@ function out = change_dist(img, orig_dist, new_dist)
 %     pfloor = floor(padding);
 %     out = padarray(small, pfloor, 'post');
 %     out = padarray(out, pceil, 'pre');
+%     out = imresize(out, 3);
     out = img;
 end

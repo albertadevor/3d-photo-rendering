@@ -1,16 +1,39 @@
 
 % Modify distances so that all images can work togehter
 % files = ['dif_dists/temple_SR0006_07m.png'; 'dif_dists/temple_SR0011_12m.png'; 'dif_dists/temple_SR0009_05m.png'];
-files = ['templeSR0006.png'; 'templeSR0011.png'; 'templeSR0009.png'];
-distances = [7 12 5]; %how far away camera is from each object
+% files = ['templeSR0006.png'; 'templeSR0011.png'; 'templeSR0009.png'];
+% distances = [7 12 5]; %how far away camera is from each object
+% angles = [ pi/2, 0, pi/4];
+read = csvread('ARTags/webcam_ar_track/scripts/extracted_frames/extracted_data.csv');
+
+% angles = wrapTo2Pi(deg2rad(read(1:end,2)));
+angles = (pi *read(1:end,2) / 180) + pi;
+distances = read(1:end,3);
+picture_numbers = read(1:end,1);
+files = cell(size(angles,1), 1);
+for i=1:size(picture_numbers)
+    real_num = picture_numbers(i); %offset for duck data
+    extra_text = '';
+    if(real_num < 10)
+        extra_text = '00';
+    elseif(real_num < 100)
+        extra_text = '0';
+    end
+    text = strcat('ARTags/webcam_ar_track/scripts/extracted_frames/frame00', extra_text, num2str(real_num), '.png');
+    files{i} = text;
+end
+files = cell2mat(files);
+
+
 furthest = max(distances);
-images = cell(size(files));
-masked_images = cell(size(files));
-for idx=1:size(distances,2)
+images = cell(size(files, 1));
+masked_images = cell(size(files,1), 1);
+for idx=1:size(distances,1)
     im = imread(files(idx, :));
-    thing = change_dist(im, distances(idx), furthest);
-    images{idx} = thing;
-    masked_images{idx} = mask_image(thing);
+    
+%     images{idx} = change_dist(im, distances(idx), furthest);
+    images{idx} = im;
+    masked_images{idx} = mask_image(im);
 end
 
 % convert a not-too-big image into a mask. These images should
@@ -27,14 +50,14 @@ end
 [height width] = size(masked_images{1});
 % files = ['templeSR0006.png'; 'templeSR0011.png'; 'templeSR0009.png'];
 %files = [ 'dinoSparseRing/dinoSR0001.png'; 'dinoSparseRing/dinoSR0005.png'; 'dinoSparseRing/dinoSR0003.png']
-allIms = compileIms(images, height, width);
+% allIms = compileIms(images, height, width);
 
 % allIms(:,:,1);
 % allIms(:,:,2));
 % figure, imshow(allIms(:,:,3));
-angles = [ pi/2, 0, pi/4];
 
-[X, Y, Z, pointCloud] = combine(masked_images{1}, allIms, angles);
+
+[X, Y, Z, pointCloud] = combine(masked_images{1}, masked_images, angles');
 
 % 3D reconstruction of point cloud
 figure, scatter3(X, Y, Z);
@@ -71,11 +94,11 @@ function [X, Y, Z, pointCloud] = combine(im1, masks, thetas)
     pointCloud = ones(m1, n1, n2);
     counter = 1;
     
-    for imageNumber = 1:3
-        im = masks(:,:,imageNumber);
+    for imageNumber = 1:6:18
+        im = masks{imageNumber};
         theta = thetas(imageNumber);
 
-        multiplier = cot(theta);
+        multiplier = cos(theta) / sin(theta);
         if(multiplier < 0.1)
            multiplier = 0; 
         end
