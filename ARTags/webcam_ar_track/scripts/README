@@ -1,0 +1,6 @@
+To extract desired angles from data, run select_angles.py.
+It will require an --angles argument, where you specify the desired angles separated by commas
+EXAMPLE: python select_angles.py --angles 0.0,45.0,90.0
+
+It will extract the frames to extracted_frames. Each frame will contain the angle and distance 
+in the filename, multiplied by 10 (to preserve some precision while avoiding periods in the filename).
