@@ -5,16 +5,16 @@
 % imTwo = mask_image('templeSparseRing/templeSR0011.png');
 % imThree = mask_image('templeSparseRing/templeSR0009.png');
 
-imOne = mask_image('~/Desktop/duckF.png');
-imTwo = mask_image('~/Desktop/duckS.png');
-imThree = mask_image('~/Desktop/duckQ.png');
+imOne = mask_image('duckF.png');
+imTwo = mask_image('duckS.png');
+imThree = mask_image('duckQ.png');
 % this will display the masks.
 
 % combine the two masks to create a 3-D point cloud.
 % X, Y, and Z hold the coordinates themselves, while
 % pointCloud is the actual grid.
 [height width] = size(imOne);
-files = ['~/Desktop/duckF.png'; '~/Desktop/duckS.png'; '~/Desktop/duckQ.png'];
+files = ['duckF.png'; 'duckS.png'; 'duckQ.png'];
 
 %files = ['templeSparseRing/templeSR0006.png'; 'templeSparseRing/templeSR0011.png'; 'templeSparseRing/templeSR0009.png'];
 %files = [ 'dinoSparseRing/dinoSR0001.png'; 'dinoSparseRing/dinoSR0005.png'; 'dinoSparseRing/dinoSR0003.png']
