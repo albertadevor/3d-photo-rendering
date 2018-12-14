@@ -35,7 +35,9 @@ def process_with_thresh(low_col, high_col):
         os.mkdir('masked_frames')
     frames = sorted([f for f in os.listdir('frames') if os.path.isfile(os.path.join('frames', f))])
     print len(frames), 'frames found'
-    for f in frames:
+    for i, f in enumerate(frames):
+        if i < 80:
+            continue
         path = os.path.join('frames', f)
         img = cv2.imread(path)
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
