@@ -29,7 +29,7 @@ def refine_mask(mask):
     return mask, xOffset, yOffset
 
 
-def process_with_thresh(low_col, high_col):
+def process_with_thresh(low_col, high_col, low_col2, high_col2):
     if os.path.isdir('masked_frames'):
         shutil.rmtree('masked_frames')
         os.mkdir('masked_frames')
@@ -42,6 +42,8 @@ def process_with_thresh(low_col, high_col):
         img = cv2.imread(path)
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         mask = cv2.inRange(hsv, low_col, high_col)
+        mask2 = cv2.inRange(hsv, low_col2, high_col2)
+        mask = mask + mask2
         try:
             mask, xOffset, yOffset = refine_mask(mask)
         except:
@@ -74,4 +76,6 @@ if __name__ == '__main__':
     #high_col = np.array([90,150,180])
     low_col = np.array([23,100,122])
     high_col = np.array([30,180,180])
-    process_with_thresh(low_col, high_col)
+    low_col2 = np.array([10,100,135])
+    high_col2 = np.array([25,192,170])
+    process_with_thresh(low_col, high_col, low_col2, high_col2)
